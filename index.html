@@ -77,6 +77,15 @@
 			position: fixed;
 			background-color: black;	
         }
+		
+		.online {
+			color: green;
+		}
+
+		.offline {
+			color: red;
+		}
+		
     </style>
 </head>
 <body>
@@ -126,6 +135,29 @@
     <footer>
         <p>&copy; 1993 TUBOID</p>
     </footer>
+
+    <script>
+async function checkServerStatus() {
+    try {
+        const response = await fetch('https://183.90.80.46/server_status');
+        const data = await response.json();
+
+        // Assuming the server is always online for demonstration
+        const serverOnline = data.serverStatus === 'online';
+
+        const footer = document.querySelector('footer');
+        const statusText = serverOnline ? 'Online' : 'Offline';
+
+        // Dynamically set the color based on the server status
+        const statusColor = serverOnline ? 'green' : 'red';
+
+        footer.innerHTML = `<p>&copy; 1993 TUBOID | Server Status: <span style="color: ${statusColor}">${statusText}</span></p>`;
+    } catch (error) {
+        console.error('Error checking server status:', error);
+    }
+}
+        document.addEventListener('DOMContentLoaded', checkServerStatus);
+    </script>
 
 </body>
 
