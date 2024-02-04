@@ -139,7 +139,7 @@
     <script>
 async function checkServerStatus() {
     try {
-        const response = await fetch('https://183.90.80.46/server_status');
+        const response = await fetch('https://servercheck.plebsclub.com/server_status');
         const data = await response.json();
 
         // Assuming the server is always online for demonstration
