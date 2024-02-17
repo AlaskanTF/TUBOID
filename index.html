@@ -136,28 +136,37 @@
         <p>&copy; 1993 TUBOID</p>
     </footer>
 
-    <script>
+<script>
 async function checkServerStatus() {
     try {
-        const response = await fetch('https://servercheck.plebsclub.com/server_status');
+        const serverId = '26304111'; // Replace with your BattleMetrics server ID
+        const response = await fetch(`https://api.battlemetrics.com/servers/${serverId}`);
         const data = await response.json();
 
-        // Assuming the server is always online for demonstration
-        const serverOnline = data.serverStatus === 'online';
+        // Check if the server status is 'online'
+        const serverOnline = data.data && data.data.attributes && data.data.attributes.status === 'online';
+
+        let playerCount = 0;
+
+        if (serverOnline) {
+            playerCount = data.data.attributes.players || 0;
+        }
 
         const footer = document.querySelector('footer');
         const statusText = serverOnline ? 'Online' : 'Offline';
 
         // Dynamically set the color based on the server status
         const statusColor = serverOnline ? 'green' : 'red';
+        const playerCountColor = serverOnline ? 'green' : 'inherit'; // Set player count color to green if the server is online
 
-        footer.innerHTML = `<p>&copy; 1993 TUBOID | Server Status: <span style="color: ${statusColor}">${statusText}</span></p>`;
+        footer.innerHTML = `<p>&copy; 1993 TUBOID | Server Status: <span style="color: ${statusColor}">${statusText}</span> | Players Online: <span style="color: ${playerCountColor}">${playerCount}</span></p>`;
     } catch (error) {
         console.error('Error checking server status:', error);
     }
 }
-        document.addEventListener('DOMContentLoaded', checkServerStatus);
-    </script>
+
+document.addEventListener('DOMContentLoaded', checkServerStatus);
+</script>
 
 </body>
 
